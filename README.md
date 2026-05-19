@@ -89,31 +89,48 @@ The project includes:
 
 The project uses the following machine learning algorithm:
 
-## Random Forest Classifier
+##  Model Training and Prediction
+For training our model we use Random Forest Classifier. It is an ensemble learning method that combines the results of multiple decision trees to make a final prediction.
 
-Random Forest is an ensemble learning algorithm that combines multiple decision trees to improve prediction accuracy and reduce overfitting.
-
-Example:
-
-python
 from sklearn.ensemble import RandomForestClassifier
 
 clf = RandomForestClassifier()
 clf.fit(X_train, y_train)
 
+y_pred = clf.predict(X_test)
+
+Output:
+
+randomforestclassifier()
+
 # Model Evaluation
 
 The model performance was evaluated using:
 
-- Accuracy Score
-- Confusion Matrix
-- Precision
-- Recall
-- Classification Performance
+ ## Accuracy Score
+  from sklearn.metrics import accuracy_score
 
-## Model Accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Model Accuracy: {accuracy:.2f}")
 
+Output:
 Model Accuracy: 0.78
+
+
+## Confusion Matrix and Performance Metrics
+We evaluate precision, recall and accuracy using a confusion matrix.
+
+  from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+
+cm = confusion_matrix(y_test, y_pred)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["No Churn", "Churn"])
+disp.plot(cmap="coolwarm")
+plt.title('Confusion Matrix')
+plt.show()
+
+Output: Confusion matrix shows how well the model predicts customer churn. It correctly identifies 924 non-churners and 181 churners. However 117 non-churners are wrongly classified as churners and 187 churners are missed. The high number of missed churners suggests the model may need further tuning.
+
+
 
 # Key Insights
 
@@ -163,9 +180,7 @@ Future enhancements for this project may include:
 ├── Telco-Customer-Churn.csv
 ├── README.md
 
-# Reference
 
-This project was implemented for learning and educational purposes using publicly available customer churn datasets and machine learning concepts inspired by GeeksforGeeks articles.
 
 # Conclusion
 

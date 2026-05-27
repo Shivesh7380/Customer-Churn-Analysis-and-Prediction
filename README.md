@@ -99,7 +99,7 @@ print(dataset.describe())
 tenure – The number of months a customer has stayed with the company.
 InternetService – The type of internet service the customer has DSL, Fiber optic or None.
 PaymentMethod– The method the customer uses for payments.
-Churn – The target variable i.e Yes for customer churned and No for customer stayed.
+Churn – The target variable , Yes for customer churned and No for customer stayed.
 
 
 

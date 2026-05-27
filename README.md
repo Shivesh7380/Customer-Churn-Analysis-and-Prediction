@@ -75,10 +75,12 @@ The project includes:
 
 ### 1.1 Loading the Dataset
 We start by importing the necessary Python libraries and loading the Telco Customer Churn dataset. This dataset contains various customer details such as service plans, usage behavior and churn status. 
-Code: import numpy as np
+#### Code:
+import numpy as np
+
 import pandas as pd
 
-dataset = pd.read_csv('/filename')
+dataset = pd.read_csv(r"C:\Users\monu7\Downloads\Telco_customer_churn.csv")
 
 dataset.head()
 
@@ -86,7 +88,9 @@ dataset.head()
 ### 1.2 Understanding the Dataset
 To gain insights into the dataset we first check for missing values and understand its structure. The dataset includes features such as:
 
-#### Code: print(dataset.isnull().sum())
+#### Code: 
+print(dataset.isnull().sum())
+
 print(dataset.describe())
 
 #### Output: I have uploaded the output in the form of Snapshot for clear understanding.
@@ -104,24 +108,32 @@ We check the number of churners and non-churners to understand the balance of th
 import matplotlib.pyplot as plt
 
 print(dataset['Churn'].value_counts())
+
 sns.countplot(x='Churn', data=dataset, palette='coolwarm')
+
 plt.title('Churn Distribution')
+
 plt.xlabel('Churn (0 = No, 1 = Yes)')
+
 plt.ylabel('Count')
+
 plt.show()
 
-Output: Churn Distribution chart ( i Uploaded in form snapshot )
+#### Output:
+Churn Distribution chart ( i Uploaded in form snapshot )
 
 ### 2. Data Preprocessing
 
 #### 2.1 Handling Missing and Incorrect Values
 Before processing we ensure that all numerical columns contain valid values. The TotalCharges column sometimes has empty spaces which need to be converted to numerical values.
 
-pd.to_numeric(dataset['TotalCharges'], errors='coerce') converts the TotalCharges column to numerical format. If any value is not convertible (e.g., empty spaces), it replaces it with NaN.
+pd.to_numeric(dataset['TotalCharges'], errors='coerce') 
 
-.fillna(dataset['TotalCharges'].median(), inplace=True) replaces missing values (NaN) with the median of the column to maintain consistency in numerical values.
+.fillna(dataset['TotalCharges'].median(), inplace=True) 
 
-Code: dataset['TotalCharges'] = pd.to_numeric(dataset['TotalCharges'], errors='coerce')
+##### Code:
+dataset['TotalCharges'] = pd.to_numeric(dataset['TotalCharges'], errors='coerce')
+
 dataset['TotalCharges'].fillna(dataset['TotalCharges'].median(), inplace=True)
 
 
@@ -133,25 +145,33 @@ LabelEncoder() converts categorical values into numerical form. Each unique cate
 
 The loop iterates through each categorical column and applies fit_transform() to encode categorical variables into numbers.
 
-Code: from sklearn.preprocessing import LabelEncoder
+#### Code:
+from sklearn.preprocessing import LabelEncoder
 
 labelencoder = LabelEncoder()
+
 categorical_cols = ['gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService', 
-                    'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 
-                    'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod', 'Churn']
+
+'OnlineSecurity','OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 
+
+'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod', 'Churn']
+
 for col in categorical_cols:
+
     dataset[col] = labelencoder.fit_transform(dataset[col])
     
 
 #### 2.3 Feature Selection and Splitting Data
 We separate the features (X) and target variable (y) and split the dataset into training and testing sets.
 
-X = dataset.drop(['customerID', 'Churn'], axis=1) removes the customerID (irrelevant for prediction) and Churn column (target variable).
+X = dataset.drop(['customerID','Churn'],axis=1) 
 
-y = dataset['Churn'] defines y as the target variable, which we want to predict.
-train_test_split() splits data into 80% training and 20% testing for model evaluation.
+y = dataset['Churn'] 
 
-Code: from sklearn.model_selection import train_test_split
+train_test_split() 
+
+#### Code:
+from sklearn.model_selection import train_test_split
 
 X = dataset.drop(['customerID', 'Churn'], axis=1)
 
@@ -163,26 +183,32 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 #### 2.4 Feature Scaling
 Since features are on different scales we apply standardization to improve model performance. It prevents models from being biased toward larger numerical values and improves convergence speed in optimization algorithms like gradient descent
 
-StandardScaler(): Standardizes data by transforming it to have a mean of 0 and a standard deviation of 1 ensuring all features are on a similar scale.
-fit_transform(X_train): Fits the scaler to the training data and transforms it.
-transform(X_test): Transforms the test data using the same scaling parameters.
+StandardScaler()
 
-#### Code: from sklearn.preprocessing import StandardScaler
+fit_transform(X_train)
+
+transform(X_test)
+
+#### Code: 
+from sklearn.preprocessing import StandardScaler
 
 scaler = StandardScaler()
 
 X_train = scaler.fit_transform(X_train)
+
 X_test = scaler.transform(X_test)
 
 
 ### 3.  Model Training and Prediction
 For training our model we use Random Forest Classifier. It is an ensemble learning method that combines the results of multiple decision trees to make a final prediction.
 
-#### Code: from sklearn.ensemble import RandomForestClassifier
+#### Code: 
+from sklearn.ensemble import RandomForestClassifier
 
 clf = from sklearn.ensemble import RandomForestClassifier
 
 clf = RandomForestClassifier()
+
 clf.fit(X_train, y_train)
 
 y_pred = clf.predict(X_test)
@@ -197,9 +223,11 @@ randomforestclassifier()
 The model performance was evaluated using:
 
  #### 4.1 Accuracy Score
-  from sklearn.metrics import accuracy_score
+ #### Code:
+ from sklearn.metrics import accuracy_score
 
 accuracy = accuracy_score(y_test, y_pred)
+
 print(f"Model Accuracy: {accuracy:.2f}")
 
 #### Output:
@@ -209,12 +237,17 @@ Model Accuracy: 0.78
 #### 4.2 Confusion Matrix and Performance Metrics
 We evaluate precision, recall and accuracy using a confusion matrix.
 
-  from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+#### Code:
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 cm = confusion_matrix(y_test, y_pred)
+
 disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["No Churn", "Churn"])
+
 disp.plot(cmap="coolwarm")
+
 plt.title('Confusion Matrix')
+
 plt.show()
 
 #### Output: 
@@ -222,7 +255,7 @@ Confusion matrix shows how well the model predicts customer churn. It correctly 
 
 
 
-#### Key Insights
+### Key Insights
 
 - Customers with shorter tenure are more likely to churn.
 - Contract type significantly impacts customer retention.
@@ -230,7 +263,7 @@ Confusion matrix shows how well the model predicts customer churn. It correctly 
 - Electronic payment methods are associated with higher churn probability.
 - Customer support and additional services influence retention behavior.
 
-#### Visualizations Included
+### Visualizations Included
 
 The project includes the following visualizations:
 
@@ -240,7 +273,7 @@ The project includes the following visualizations:
 - Confusion Matrix
 - Feature-Based Customer Analysis
 
-#### Learning Outcomes
+### Learning Outcomes
 
 Through this project, I learned:
 
@@ -272,7 +305,7 @@ Future enhancements for this project may include:
 
 
 
-#### Conclusion
+### Conclusion
 
 This project demonstrates how machine learning and data analysis techniques can be used to predict customer churn and understand customer behavior.
 

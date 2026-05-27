@@ -85,6 +85,7 @@ dataset = pd.read_csv(r"C:\Users\monu7\Downloads\Telco_customer_churn.csv")
 dataset.head()
 
 
+
 ### 1.2 Understanding the Dataset
 To gain insights into the dataset we first check for missing values and understand its structure. The dataset includes features such as:
 
@@ -99,6 +100,7 @@ tenure – The number of months a customer has stayed with the company.
 InternetService – The type of internet service the customer has DSL, Fiber optic or None.
 PaymentMethod– The method the customer uses for payments.
 Churn – The target variable i.e Yes for customer churned and No for customer stayed.
+
 
 
 ### 1.3 Analyzing Churn Distribution
@@ -122,6 +124,8 @@ plt.show()
 #### Output:
 Churn Distribution chart ( i Uploaded in form snapshot )
 
+
+
 ### 2. Data Preprocessing
 
 #### 2.1 Handling Missing and Incorrect Values
@@ -135,6 +139,8 @@ pd.to_numeric(dataset['TotalCharges'], errors='coerce')
 dataset['TotalCharges'] = pd.to_numeric(dataset['TotalCharges'], errors='coerce')
 
 dataset['TotalCharges'].fillna(dataset['TotalCharges'].median(), inplace=True)
+
+
 
 
 #### 2.2 Handling Categorical Variables
@@ -159,6 +165,8 @@ categorical_cols = ['gender', 'Partner', 'Dependents', 'PhoneService', 'Multiple
 for col in categorical_cols:
 
     dataset[col] = labelencoder.fit_transform(dataset[col])
+
+
     
 
 #### 2.3 Feature Selection and Splitting Data
@@ -180,6 +188,8 @@ y = dataset['Churn']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
 
+
+
 #### 2.4 Feature Scaling
 Since features are on different scales we apply standardization to improve model performance. It prevents models from being biased toward larger numerical values and improves convergence speed in optimization algorithms like gradient descent
 
@@ -197,6 +207,8 @@ scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 
 X_test = scaler.transform(X_test)
+
+
 
 
 ### 3.  Model Training and Prediction
@@ -218,6 +230,8 @@ y_pred = clf.predict(X_test)
 
 randomforestclassifier()
 
+
+
 ### 4. Model Evaluation
 
 The model performance was evaluated using:
@@ -232,6 +246,7 @@ print(f"Model Accuracy: {accuracy:.2f}")
 
 #### Output:
 Model Accuracy: 0.78
+
 
 
 #### 4.2 Confusion Matrix and Performance Metrics
@@ -252,6 +267,7 @@ plt.show()
 
 #### Output: 
 Confusion matrix shows how well the model predicts customer churn. It correctly identifies 924 non-churners and 181 churners. However 117 non-churners are wrongly classified as churners and 187 churners are missed. The high number of missed churners suggests the model may need further tuning.
+
 
 
 
